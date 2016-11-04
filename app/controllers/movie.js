@@ -75,7 +75,7 @@ exports.save = function(req, res) {
 		})
 	} else {
 		_movie = new Movie(movieObj)
-
+// 添加注释
 		var categoryId = _movie.category
 		_movie.save(function(err, movie) {
 			if (err) {
