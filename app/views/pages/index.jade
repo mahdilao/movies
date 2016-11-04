@@ -11,10 +11,10 @@ block content
 						if cat.movies && cat.movies.length > 0
 							each item in cat.movies
 								.col-md-2
-									.thumbnail
+									.thumbnail(style="height:354px")
 										a(href="/movie/#{item._id}")
-											img(src="#{item.poster}", alt="#{item.title}")
+											img(src="#{item.poster}", alt="#{item.title}" style="width:150px; height:224px")
 										.caption
-											h3 #{item.title}
-											p: a.btn.btn-primary(href="/movie/#{item._id}", role="button") 观看预告片
+											h4.text-center(style="display:block; height:38px") #{item.title}
+											p.text-center: a.btn.btn-primary(href="/movie/#{item._id}", role="button") 观看预告片
 								
