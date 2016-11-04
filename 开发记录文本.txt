@@ -1,0 +1,72 @@
+引入的工具
+npm install express
+npm install jade
+npm install mongoose
+npm install bower -g
+bower install bootstrap
+
+bower init  配置前端静态资源
+
+npm install grunt -
+npm install grunt-cli -g
+npm install grunt-contrib-watch --save-dev
+npm install grunt-contrib-nodemon --save-dev
+npm install grunt-concurrent --save-dev
+npm install bcrypt-nodejs --save   //引入加密模块
+
+//express4里要单独安装cookie-parser和express-session:
+npm install express-session --save
+npm install cookie-parser --save
+
+npm install connect-mongo --save
+
+// debug 信息模块
+npm install morgan --save
+
+后端开发结构
+MovieDemo/
+	-node_modules/
+	-bower_components/
+
+	-config/
+		routse.js // 路由文件
+	-app/	 存放视图 数据 控制方法
+		-views/		视图文件
+			-includes/	抽象区块
+				head.jade	文件引用
+				header.jade	头部描述
+			-pages/	页面模型
+				index.jade	首页
+				detail.jade	详情页
+				admin.jade	后台录入页
+				list.jade	后台列表页
+			layout.jade		布局文件
+		-models/
+			movie.js
+		-schemas/
+			movie.js
+		-controllers/	控制文件
+	app.js		入口文件
+
+入口文件
+app.js
+
+测试路径
+localhost:3000/
+localhost:3000/movie/1
+localhost:3000/admin/movie
+localhost:3000/admin/list
+
+数据库模型
+-Schema		模式定义 定义数据字段 定义字段类型
+-model		编译模型 
+-Documents	文档实例化
+
+Mongoose 	工具模块 对Mongodb进行操作
+
+Mongodb	数据库模块
+
+
+poster: http://r3.ykimg.com/05160000530EEB63675839160D0B79D5
+
+flash: http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf

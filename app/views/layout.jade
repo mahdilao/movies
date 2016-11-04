@@ -1,0 +1,11 @@
+//- 布局文件
+doctype
+html
+	head
+		meta(charset='utf-8')
+		title #{title}
+		//- include 抽象的头部区块
+		include ./includes/head
+	body(style="padding-bottom: 50px")
+		include ./includes/header
+		block  content
