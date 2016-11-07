@@ -22,37 +22,60 @@ exports.index = function(req, res) {
 //search page
 exports.search = function(req, res) {
 	var catId = req.query.cat
-	var page = parseInt(req.query.p, 10)
+	var page = parseInt(req.query.p, 10) || 0
 	var count = 3
 	var index = page * count
+	var q = req.query.q
 
-	Category.find({_id: catId})
-	.populate({
-		path: 'movies',
-		select: 'title poster',
-		// options: {limit:count, skip: index}
-	}) // options:{limit:5, skip: index} 限制输出条数,并跳到索引位置
-	.exec(function(err, categories){
-		if (err) {
-			console.log(err);
-		}
-		console.log(categories);
-		// 渲染数据
-		var category = categories[0] || {}
-		var movies = category.movies || []
-		var results = movies.slice(index, index + count)
-		console.log('category is：')
-		console.log(category)
-		console.log(Math.ceil(movies.length / count))
-		console.log(movies)
-		res.render('results', {
-			title: 'movie 结果列表页',
-			keywoed: category.name,
-			currentPage: (page + 1), // 当前页面
-			totalPage: Math.ceil(movies.length / count), // 总页数
-			query: 'cat=' + catId,
-			movies: results
-			// category: category
+	if(catId){
+		Category.find({_id: catId})
+		.populate({
+			path: 'movies',
+			select: 'title poster',
+			// options: {limit:count, skip: index}
+		}) // options:{limit:5, skip: index} 限制输出条数,并跳到索引位置
+		.exec(function(err, categories){
+			if (err) {
+				console.log(err);
+			}
+			console.log(categories);
+			// 渲染数据
+			var category = categories[0] || {}
+			var movies = category.movies || []
+			var results = movies.slice(index, index + count)
+			console.log('category is：')
+			console.log(category)
+			console.log(Math.ceil(movies.length / count))
+			console.log(movies)
+			res.render('results', {
+				title: 'movie 结果列表页',
+				keywoed: category.name,
+				currentPage: (page + 1), // 当前页面
+				totalPage: Math.ceil(movies.length / count), // 总页数
+				query: 'cat=' + catId,
+				movies: results
+				// category: category
+			})
 		})
-	})
+	}else{
+		Movie
+		.find({title: new RegExp(q + '.*', 'i')}) // 正则匹配查询
+		.exec(function(err, movies){
+			if (err) {
+				console.log(err);
+			}
+			console.log(movies);
+			// 渲染数据
+			var results = movies.slice(index, index + count)
+			res.render('results', {
+				title: 'movie 结果列表页',
+				keywoed: q,
+				currentPage: (page + 1), // 当前页面
+				totalPage: Math.ceil(movies.length / count), // 总页数
+				query: 'q=' + q,
+				movies: results
+				// category: category
+			})
+		})
+	}
 }
