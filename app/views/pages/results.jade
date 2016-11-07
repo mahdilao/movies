@@ -1,0 +1,39 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			.panel.panel-default
+				.panel-heading
+					h3 #{keyword}
+				.panel-body
+					if movies && movies.length > 0
+						each item in movies
+							.col-md-2
+								.thumbnail(style="height:354px")
+									a(href="/movie/#{item._id}")
+										img(src="#{item.poster}", alt="#{item.title}" style="width:150px; height:224px")
+									.caption
+										h4.text-center(style="display:block; height:38px") #{item.title}
+										p.text-center: a.btn.btn-primary(href="/movie/#{item._id}", role="button") 观看预告片
+			.text-right
+				ul.pagination
+					- for (var i = 0; i < totalPage; i++){
+						- if (i == 0 && currentPage > 1){
+							li
+								a(href="/results?#{query}&p=#{currentPage - 2}") &lt;&lt;
+						- }
+						- if (currentPage == ( i + 1 )){
+							li.active
+								span #{currentPage}
+							- {j = i}
+						- }
+						- else{
+							li
+								a(href="/results?#{query}&p=#{i}") #{i + 1}
+						- }
+						- if (i == totalPage-1 && currentPage < totalPage){
+							li
+								a(href="/results?#{query}&p=#{currentPage}") &gt;&gt;
+						- }
+					- }

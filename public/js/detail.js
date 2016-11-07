@@ -1,3 +1,4 @@
+// 相互评论
 $(function (){
 	$('.comment').click(function(e){
 		var target = $(this)
