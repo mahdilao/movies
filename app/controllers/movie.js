@@ -2,6 +2,8 @@ var Movie = require('../models/movie')
 var Category = require('../models/category')
 var Comment = require('../models/comment')
 var _ = require('underscore')
+var fs = require('fs') // 系统级别的文件读取模块
+var path = require('path')  // 读取路径的模块
 
 //detail page
 exports.detail = function(req, res) {
@@ -53,11 +55,36 @@ exports.update = function(req, res) {
 	}
 }
 
+// admin savePoster
+exports.savePoster = function(req, res, next){
+	var posterData = req.files.uploadPoster // 获取文件
+	var filePath = posterData.path  //获取缓存地址
+	var originalFilename = posterData.originalFilename // 获取文件原始名字
+	if(originalFilename){
+		fs.readFile(filePath, function(err, data){
+			var timestamp = Date.now() // 申明一个时间戳
+			var type = posterData.type.split('/')[1] // 根据文件的type获取文件格式
+			var poster = timestamp + "." + type // 生成新文件地址
+			var newPath = path.join(__dirname, "../../" , '/public/upload/' + poster) //将文件上传到服务器中
+			fs.writeFile(newPath, data, function(err){
+				req.poster = poster
+				next()
+			})
+		})
+	}else{
+		next()
+	}
+}
+
 // admin post movie 接收从后台post来的数据
 exports.save = function(req, res) {
 	var id = req.body.movie._id //获取传递过来的id
 	var movieObj = req.body.movie
 	var _movie
+
+	if (req.poster) {
+		movieObj.poster = req.poster
+	}
 
 	if (id) { // 判断数据id是否存在
 		Movie.findById(id, function(err, movie) {

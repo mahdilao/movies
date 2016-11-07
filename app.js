@@ -53,6 +53,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 // 设置资源路径 __dirname根目录
 app.use(serveStatic(path.join(__dirname, 'public')))
+// 引入文件上传模块
+app.use(require('connect-multiparty')());
 // 引入cookie模块
 app.use(cookieParser())
 app.use(session({
